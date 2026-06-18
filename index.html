@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TeleLinks | شبكة تيليجرام</title>
   <style>
-    /* ====== نفس الألوان والتصميم السابق ====== */
+    /* ====== نفس الألوان والتصميم السابق مع تعديلات ====== */
     * {
       margin: 0;
       padding: 0;
@@ -70,7 +70,19 @@
     .btn-primary:hover {
       background: #137a8a;
     }
-    /* زر النشر الجديد */
+    .btn-danger {
+      background: #d32f2f;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .btn-danger:hover {
+      background: #b71c1c;
+    }
     .btn-publish {
       background: #ffb74d;
       color: #0D5C75;
@@ -153,12 +165,34 @@
       border-right: 6px solid #199FB1;
       transition: 0.3s;
       cursor: pointer;
+      height: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
     }
     .card:hover {
       transform: translateY(-5px);
       box-shadow: 0 12px 28px rgba(13, 92, 117, 0.20);
     }
-    .card h3 { color: #0D5C75; }
+    .card h3 { 
+      color: #0D5C75;
+      font-size: 18px;
+      margin: 8px 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .card p {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      color: #3a5a6a;
+      font-size: 14px;
+    }
     .card .tag {
       background: #A5D1E1;
       display: inline-block;
@@ -167,6 +201,7 @@
       font-size: 13px;
       color: #0D5C75;
       font-weight: 600;
+      align-self: flex-start;
     }
     .card .stats {
       display: flex;
@@ -174,6 +209,14 @@
       margin-top: 12px;
       color: #0D5C75;
       font-weight: 500;
+      font-size: 14px;
+    }
+    .card .cover-img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 10px;
     }
     .btn {
       background: #199FB1;
@@ -270,7 +313,6 @@
     .modal-box .error-msg.show { display: block; }
 
     /* ====== الأنماط الجديدة للإضافات ====== */
-    /* صفحات مخفية */
     .page { display: none; padding: 20px 30px; max-width: 1200px; margin: 0 auto; }
     .page.active { display: block; }
 
@@ -297,10 +339,19 @@
       margin-bottom: 5px;
       font-size: 14px;
     }
-    .form-group label .hint {
+    .form-group label .hint-icon {
+      cursor: help;
+      color: #199FB1;
+      font-size: 16px;
+      margin-right: 5px;
+      display: inline-block;
+    }
+    .form-group label .hint-text {
       font-weight: normal;
       color: #6f8a9b;
       font-size: 13px;
+      display: block;
+      margin-top: 2px;
     }
     .form-group input, .form-group select, .form-group textarea {
       width: 100%;
@@ -421,6 +472,23 @@
       border-bottom: 1px solid #dce9f0;
     }
     .post-sidebar .stat-item:last-child { border: none; }
+    .post-details ul {
+      list-style: none;
+      padding: 0;
+    }
+    .post-details ul li {
+      padding: 8px 0;
+      border-bottom: 1px solid #eef5f8;
+    }
+    .post-details ul li strong {
+      color: #0D5C75;
+    }
+    .post-actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
 
     /* رسائل */
     .toast {
@@ -452,16 +520,14 @@
 </head>
 <body>
 
-  <!-- ====== HEADER (معدل قليلاً لإضافة زر النشر) ====== -->
+  <!-- ====== HEADER ====== -->
   <header class="header">
     <div class="logo" onclick="navigateTo('home')">Tele<span>Links</span></div>
     <div class="header-actions">
-      <!-- منطقة البحث -->
       <div class="search-box">
         <input type="text" id="globalSearch" placeholder="ابحث..." />
         <button onclick="searchPosts()">بحث</button>
       </div>
-      <!-- منطقة المستخدم -->
       <div id="userSection">
         <span class="user-greeting" id="greeting">مرحباً، زائر</span>
         <button class="btn-outline" id="loginBtn" style="display:inline-block;">تسجيل الدخول</button>
@@ -474,16 +540,15 @@
 
   <!-- ====== الصفحة الرئيسية ====== -->
   <div id="homePage" class="page active">
-    <!-- ====== HERO ====== -->
     <section class="hero">
       <h1>🚀 اكتشف أفضل قنوات ومجموعات تيليجرام</h1>
       <p>TeleLinks | شبكة تيليجرام – دليلك الشامل لمجتمع التلغرام العربي</p>
     </section>
 
-    <!-- ====== التصنيفات ====== -->
     <div class="categories" id="categoryFilter">
       <span class="cat-badge active" data-cat="all" onclick="filterPosts('all')">الكل</span>
       <span class="cat-badge" data-cat="كتب وروايات" onclick="filterPosts('كتب وروايات')">📚 كتب وروايات</span>
+      <span class="cat-badge" data-cat="أنمي ومانغا" onclick="filterPosts('أنمي ومانغا')">🎌 أنمي ومانغا</span>
       <span class="cat-badge" data-cat="ألعاب" onclick="filterPosts('ألعاب')">🎮 ألعاب</span>
       <span class="cat-badge" data-cat="ذكاء اصطناعي" onclick="filterPosts('ذكاء اصطناعي')">🤖 ذكاء اصطناعي</span>
       <span class="cat-badge" data-cat="تقنية" onclick="filterPosts('تقنية')">💻 تقنية</span>
@@ -493,22 +558,21 @@
       <span class="cat-badge" data-cat="أفلام ومسلسلات" onclick="filterPosts('أفلام ومسلسلات')">🎬 أفلام ومسلسلات</span>
       <span class="cat-badge" data-cat="تصميم" onclick="filterPosts('تصميم')">🎨 تصميم</span>
       <span class="cat-badge" data-cat="برمجة" onclick="filterPosts('برمجة')">🐍 برمجة</span>
+      <span class="cat-badge" data-cat="أخرى" onclick="filterPosts('أخرى')">🔖 أخرى</span>
     </div>
 
-    <!-- ====== المحتوى ====== -->
     <h2 class="section-title">✨ أحدث الإضافات</h2>
     <div id="postsGrid" class="card-grid">
       <div style="text-align:center;padding:40px;color:#6f8a9b;width:100%;">⏳ جاري تحميل المنشورات...</div>
     </div>
   </div>
 
-  <!-- ====== صفحة النشر (جديدة) ====== -->
+  <!-- ====== صفحة النشر ====== -->
   <div id="publishPage" class="page">
     <div class="publish-container">
       <h2>✍️ إنشاء منشور جديد</h2>
       <p class="sub">انشر قناتك أو مجموعتك أو بوتك ليستفيد منه آلاف المستخدمين.</p>
 
-      <!-- قسم تحليل الرابط -->
       <div class="analyze-box">
         <input type="url" id="analyzeInput" placeholder="https://t.me/example" style="flex:2;" />
         <button class="btn-primary" onclick="analyzeLink()">🔍 تحليل الرابط</button>
@@ -526,20 +590,31 @@
       </div>
 
       <form id="publishForm" onsubmit="event.preventDefault(); publishPost();">
-        <!-- البيانات الأساسية -->
         <div class="form-row">
           <div class="form-group">
-            <label>رابط تيليجرام <span class="hint">(مطلوب)</span></label>
+            <label>
+              رابط تيليجرام
+              <span class="hint-icon" title="أدخل رابط القناة أو المجموعة أو البوت مثل https://t.me/example">❓</span>
+              <span class="hint-text">مطلوب - رابط الصفحة على تيليجرام</span>
+            </label>
             <input type="url" id="postLink" placeholder="https://t.me/..." required />
           </div>
           <div class="form-group">
-            <label>اسم القناة / المجموعة / البوت <span class="hint">(مطلوب)</span></label>
+            <label>
+              اسم القناة / المجموعة / البوت
+              <span class="hint-icon" title="الاسم الذي سيظهر للزوار في البطاقة وصفحة التفاصيل">❓</span>
+              <span class="hint-text">مطلوب - الاسم الظاهر للمستخدمين</span>
+            </label>
             <input type="text" id="postName" placeholder="الاسم الظاهر" required />
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>التصنيف <span class="hint">(مطلوب)</span></label>
+            <label>
+              التصنيف
+              <span class="hint-icon" title="اختر التصنيف المناسب لمحتوى القناة ليسهل العثور عليها">❓</span>
+              <span class="hint-text">مطلوب - يساعد في تصنيف المحتوى</span>
+            </label>
             <select id="postCategory" required>
               <option value="">اختر التصنيف</option>
               <option>كتب وروايات</option><option>أنمي ومانغا</option><option>ألعاب</option>
@@ -549,37 +624,64 @@
             </select>
           </div>
           <div class="form-group">
-            <label>صورة الغلاف <span class="hint">(رابط صورة)</span></label>
+            <label>
+              صورة الغلاف
+              <span class="hint-icon" title="رابط صورة تعبر عن محتوى القناة (اختياري)">❓</span>
+              <span class="hint-text">اختياري - رابط صورة من الإنترنت</span>
+            </label>
             <input type="url" id="postCover" placeholder="https://example.com/image.jpg" />
           </div>
         </div>
         <div class="form-group">
-          <label>📝 الوصف المختصر <span class="hint">(يظهر في نتائج البحث – مطلوب)</span></label>
+          <label>
+            📝 الوصف المختصر
+            <span class="hint-icon" title="وصف قصير يظهر في بطاقة المنشور ونتائج البحث">❓</span>
+            <span class="hint-text">مطلوب - يظهر في البطاقة (حد أقصى سطرين)</span>
+          </label>
           <textarea id="postShortDesc" rows="2" placeholder="مثال: قناة متخصصة في نشر الكتب والروايات العربية بصيغ متعددة مع تحديثات يومية." required></textarea>
         </div>
 
-        <!-- البيانات التفصيلية -->
         <div class="form-group">
-          <label>📄 الوصف الطويل <span class="hint">(صفحة تعريفية كاملة)</span></label>
+          <label>
+            📄 الوصف الطويل
+            <span class="hint-icon" title="وصف مفصل يظهر في صفحة التفاصيل للمهتمين">❓</span>
+            <span class="hint-text">اختياري - شرح كامل للمحتوى والمميزات</span>
+          </label>
           <textarea id="postLongDesc" rows="5" placeholder="اشرح بالتفصيل: طبيعة المحتوى، الفائدة للمستخدم، مميزات المجتمع، سبب التميز..."></textarea>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>🏷️ الكلمات المفتاحية</label>
+            <label>
+              🏷️ الكلمات المفتاحية
+              <span class="hint-icon" title="كلمات تساعد في البحث مثل: كتب، روايات، تحميل">❓</span>
+              <span class="hint-text">اختياري - لتحسين ظهور النتيجة في البحث</span>
+            </label>
             <input type="text" id="postKeywords" placeholder="كتب، روايات، تحميل، عربية" />
           </div>
           <div class="form-group">
-            <label>✨ مميزات القناة</label>
+            <label>
+              ✨ مميزات القناة
+              <span class="hint-icon" title="اذكر مميزات القناة مثل: تحديث يومي، محتوى حصري">❓</span>
+              <span class="hint-text">اختياري - ما يميز قناتك عن غيرها</span>
+            </label>
             <input type="text" id="postFeatures" placeholder="تحديث يومي، محتوى حصري، تفاعل" />
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>🌐 لغة المحتوى</label>
+            <label>
+              🌐 لغة المحتوى
+              <span class="hint-icon" title="اللغة الأساسية للمحتوى مثل: العربية، الإنجليزية">❓</span>
+              <span class="hint-text">اختياري - لغة المحتوى الرئيسية</span>
+            </label>
             <input type="text" id="postLang" placeholder="العربية" />
           </div>
           <div class="form-group">
-            <label>📍 الدولة المستهدفة <span class="hint">(اختياري)</span></label>
+            <label>
+              📍 الدولة المستهدفة
+              <span class="hint-icon" title="الدولة أو المنطقة المستهدفة مثل: مصر، السعودية">❓</span>
+              <span class="hint-text">اختياري - يساعد في الوصول للجمهور المناسب</span>
+            </label>
             <input type="text" id="postCountry" placeholder="مصر، السعودية، كل الدول..." />
           </div>
         </div>
@@ -589,7 +691,7 @@
     </div>
   </div>
 
-  <!-- ====== صفحة عرض المنشور (جديدة) ====== -->
+  <!-- ====== صفحة عرض المنشور ====== -->
   <div id="postPage" class="page">
     <div class="post-view-container" id="postViewContainer">
       <!-- يتم ملؤها بواسطة JavaScript -->
@@ -609,9 +711,7 @@
       <h2 id="modalTitle">تسجيل الدخول</h2>
       <div class="error-msg" id="authError"></div>
 
-      <!-- حقل اسم المستخدم (يظهر فقط في التسجيل) -->
       <input type="text" id="usernameInput" placeholder="اسم المستخدم (ظاهر للجميع)" style="display:none;" />
-
       <input type="email" id="emailInput" placeholder="البريد الإلكتروني" />
       <input type="password" id="passwordInput" placeholder="كلمة المرور (6 أحرف على الأقل)" />
 
@@ -627,7 +727,7 @@
   <div id="toast" class="toast"></div>
 
   <!-- ================================================ -->
-  <!-- ====== FIREBASE (Auth + Firestore + Realtime) ====== -->
+  <!-- ====== FIREBASE ====== -->
   <!-- ================================================ -->
   <script type="module">
     // ----- استيراد Firebase -----
@@ -652,10 +752,13 @@
       addDoc,
       onSnapshot,
       orderBy,
-      serverTimestamp 
+      serverTimestamp,
+      increment,
+      deleteDoc,
+      updateDoc
     } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
 
-    // ----- الإعدادات (خاصة بمشروعك) -----
+    // ----- الإعدادات -----
     const firebaseConfig = {
       apiKey: "AIzaSyBWiYLQRX3OuGkb_Ro2yNZenLvfESVW3n8",
       authDomain: "telelinks-83dfd.firebaseapp.com",
@@ -671,14 +774,12 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // ----- عناصر DOM (الأصلية) -----
+    // ----- عناصر DOM -----
     const greeting = document.getElementById('greeting');
     const loginBtn = document.getElementById('loginBtn');
     const signupBtn = document.getElementById('signupBtn');
     const logoutBtn = document.getElementById('logoutBtn');
     const publishNavBtn = document.getElementById('publishNavBtn');
-
-    // ----- عناصر جديدة -----
     const postsGrid = document.getElementById('postsGrid');
     const globalSearch = document.getElementById('globalSearch');
 
@@ -687,7 +788,7 @@
     let allPosts = [];
     let currentFilter = 'all';
 
-    // ----- دوال التنقل بين الصفحات (جديدة) -----
+    // ----- دوال التنقل بين الصفحات -----
     window.navigateTo = function(page, param = null) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       if (page === 'home') {
@@ -709,7 +810,7 @@
       }
     };
 
-    // ----- عرض المنشورات (جديدة) -----
+    // ----- عرض المنشورات -----
     function renderPosts(posts) {
       const filtered = currentFilter === 'all' ? posts : posts.filter(p => p.category === currentFilter);
       if (filtered.length === 0) {
@@ -718,6 +819,7 @@
       }
       postsGrid.innerHTML = filtered.map(post => `
         <div class="card" onclick="navigateTo('post', '${post.id}')">
+          ${post.cover ? `<img src="${post.cover}" alt="غلاف" class="cover-img" onerror="this.style.display='none'" />` : ''}
           <h3>${post.name || 'بدون اسم'}</h3>
           <p>${post.shortDesc || '...'}</p>
           <span class="tag">${post.category || 'عام'}</span>
@@ -730,7 +832,7 @@
       `).join('');
     }
 
-    // ----- جلب المنشورات من Firestore (Realtime) (جديدة) -----
+    // ----- جلب المنشورات من Firestore (Realtime) -----
     function listenToPosts() {
       const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
       onSnapshot(q, (snapshot) => {
@@ -747,7 +849,7 @@
       });
     }
 
-    // ----- عرض صفحة منشور واحد (جديدة) -----
+    // ----- عرض صفحة منشور واحد -----
     window.renderPostView = function(postId) {
       const container = document.getElementById('postViewContainer');
       const post = allPosts.find(p => p.id === postId);
@@ -755,16 +857,17 @@
         container.innerHTML = `<div style="text-align:center;padding:40px;color:#6f8a9b;">⚠️ المنشور غير موجود.</div>`;
         return;
       }
-      // زيادة عدد الزيارات
+      
+      // زيادة عدد المشاهدات
       const postRef = doc(db, "posts", postId);
-      getDoc(postRef).then(docSnap => {
-        if (docSnap.exists()) {
-          const currentViews = docSnap.data().views || 0;
-          setDoc(postRef, { views: currentViews + 1 }, { merge: true });
-        }
-      }).catch(e => console.warn("زيادة الزيارات فشلت", e));
+      updateDoc(postRef, { views: increment(1) })
+        .catch(e => console.warn("زيادة الزيارات فشلت", e));
 
       const coverHtml = post.cover ? `<img src="${post.cover}" alt="غلاف" />` : '📢';
+      
+      // التحقق من مالك المنشور
+      const isOwner = post.ownerId === currentUser?.uid;
+      
       container.innerHTML = `
         <div class="post-header">
           <div class="post-cover">${coverHtml}</div>
@@ -784,8 +887,21 @@
             <p>${post.shortDesc || 'لا يوجد وصف مختصر.'}</p>
             <h3>📄 وصف تفصيلي</h3>
             <p>${post.longDesc || 'لا يوجد وصف طويل.'}</p>
-            ${post.features ? `<h3>✨ مميزات</h3><p>${post.features}</p>` : ''}
-            ${post.keywords ? `<h3>🏷️ كلمات مفتاحية</h3><p>${post.keywords}</p>` : ''}
+            
+            <div class="post-details">
+              <h3>📋 تفاصيل إضافية</h3>
+              <ul>
+                <li><strong>🏷️ الكلمات المفتاحية:</strong> ${post.keywords || 'لا يوجد'}</li>
+                <li><strong>✨ المميزات:</strong> ${post.features || 'لا يوجد'}</li>
+                <li><strong>🌐 اللغة:</strong> ${post.lang || 'غير محدد'}</li>
+                <li><strong>📍 الدولة:</strong> ${post.country || 'كل الدول'}</li>
+                <li><strong>📅 تاريخ النشر:</strong> ${post.createdAt ? new Date(post.createdAt.seconds * 1000).toLocaleDateString('ar') : 'حديث'}</li>
+                <li><strong>👤 الناشر:</strong> ${post.ownerName || 'مستخدم'}</li>
+                <li><strong>🔗 الرابط:</strong> <a href="${post.link}" target="_blank" style="color:#199FB1;">${post.link}</a></li>
+              </ul>
+            </div>
+            
+            ${post.features ? `<h3>✨ مميزات القناة</h3><p>${post.features}</p>` : ''}
           </div>
           <div class="post-sidebar">
             <div class="stat-item"><span>⭐ التقييم</span><span>${post.likes || 0}</span></div>
@@ -793,15 +909,33 @@
             <div class="stat-item"><span>💾 الحفظ</span><span>${post.saves || 0}</span></div>
             <div class="stat-item"><span>🌐 اللغة</span><span>${post.lang || 'غير محدد'}</span></div>
             <div class="stat-item"><span>📍 الدولة</span><span>${post.country || 'كل الدول'}</span></div>
-            <div class="stat-item"><span>📅 النشر</span><span>${post.createdAt ? new Date(post.createdAt.seconds * 1000).toLocaleDateString('ar') : 'حديث'}</span></div>
             <hr style="margin:15px 0;border-color:#dce9f0;" />
             <a href="${post.link}" target="_blank" class="btn-primary" style="display:block;text-align:center;padding:12px;width:100%;text-decoration:none;">🚀 انضم إلى القناة</a>
+            
+            ${isOwner ? `
+              <div class="post-actions">
+                <button onclick="deletePost('${post.id}')" class="btn-danger" style="width:100%;">🗑️ حذف المنشور</button>
+              </div>
+            ` : ''}
           </div>
         </div>
       `;
     };
 
-    // ----- تحليل الرابط (جديدة) -----
+    // ----- حذف المنشور -----
+    window.deletePost = async function(postId) {
+      if (!confirm('⚠️ هل أنت متأكد من حذف هذا المنشور؟ لا يمكن التراجع عن هذا الإجراء.')) return;
+      try {
+        await deleteDoc(doc(db, "posts", postId));
+        showToast('✅ تم حذف المنشور بنجاح');
+        navigateTo('home');
+      } catch (e) {
+        console.error("خطأ في الحذف:", e);
+        showToast('❌ فشل حذف المنشور. تأكد من صلاحياتك.');
+      }
+    };
+
+    // ----- تحليل الرابط -----
     window.analyzeLink = async function() {
       const input = document.getElementById('analyzeInput');
       const link = input.value.trim();
@@ -840,7 +974,7 @@
       }
     };
 
-    // ----- نشر المنشور (جديدة) -----
+    // ----- نشر المنشور -----
     window.publishPost = async function() {
       if (!currentUser) {
         showToast('⚠️ يرجى تسجيل الدخول أولاً');
@@ -885,19 +1019,20 @@
       }
     };
 
-    // ----- البحث (جديدة) -----
+    // ----- البحث المتقدم -----
     window.searchPosts = function() {
       const q = globalSearch.value.trim().toLowerCase();
       if (!q) { renderPosts(allPosts); return; }
-      const filtered = allPosts.filter(p => 
-        p.name?.toLowerCase().includes(q) || 
-        p.shortDesc?.toLowerCase().includes(q) ||
-        p.category?.toLowerCase().includes(q)
-      );
+      
+      const keywords = q.split(' ').filter(k => k.length > 0);
+      const filtered = allPosts.filter(p => {
+        const searchText = `${p.name} ${p.shortDesc} ${p.category} ${p.keywords || ''} ${p.features || ''}`.toLowerCase();
+        return keywords.some(keyword => searchText.includes(keyword));
+      });
       renderPosts(filtered);
     };
 
-    // ----- فلترة حسب التصنيف (جديدة) -----
+    // ----- فلترة حسب التصنيف -----
     window.filterPosts = function(cat) {
       currentFilter = cat;
       document.querySelectorAll('.cat-badge').forEach(el => {
@@ -906,7 +1041,7 @@
       renderPosts(allPosts);
     };
 
-    // ----- Toast (جديدة) -----
+    // ----- Toast -----
     function showToast(msg) {
       const t = document.getElementById('toast');
       t.textContent = msg;
@@ -916,8 +1051,7 @@
     }
     window.showToast = showToast;
 
-    // ====== الكود الأصلي للمصادقة (لم يتم المساس به) ======
-    // ----- عناصر DOM للمودال (الأصلية) -----
+    // ====== الكود الأصلي للمصادقة ======
     const modal = document.getElementById('authModal');
     const closeModalBtn = document.getElementById('closeModalBtn');
     const modalTitle = document.getElementById('modalTitle');
@@ -1036,7 +1170,7 @@
       }
     }
 
-    // ----- تحديث واجهة المستخدم حسب حالة Auth (معدل قليلاً) -----
+    // ----- تحديث واجهة المستخدم حسب حالة Auth -----
     async function updateUI(user) {
       if (user) {
         try {
@@ -1067,12 +1201,12 @@
       }
     }
 
-    // ----- مراقب حالة تسجيل الدخول (الأصلي) -----
+    // ----- مراقب حالة تسجيل الدخول -----
     onAuthStateChanged(auth, (user) => {
       updateUI(user);
     });
 
-    // ----- تسجيل الخروج (الأصلي) -----
+    // ----- تسجيل الخروج -----
     logoutBtn.addEventListener('click', async () => {
       try {
         await signOut(auth);
@@ -1082,7 +1216,7 @@
       }
     });
 
-    // ----- أحداث الأزرار والنماذج (الأصلية) -----
+    // ----- أحداث الأزرار والنماذج -----
     loginBtn.addEventListener('click', () => openModal(true));
     signupBtn.addEventListener('click', () => openModal(false));
     closeModalBtn.addEventListener('click', closeModal);
@@ -1102,7 +1236,7 @@
       if (e.key === 'Escape') closeModal();
     });
 
-    // ----- التعامل مع Hash (الروابط المباشرة) (جديد) -----
+    // ----- التعامل مع Hash -----
     window.addEventListener('hashchange', () => {
       const hash = window.location.hash;
       if (hash === '#publish') navigateTo('publish');
@@ -1122,9 +1256,9 @@
       }
     }
 
-    // ----- بدء التطبيق (جديد) -----
+    // ----- بدء التطبيق -----
     listenToPosts();
-    console.log("🚀 TeleLinks جاهز مع نظام النشر وتحليل الروابط!");
+    console.log("🚀 TeleLinks جاهز مع جميع التحسينات!");
   </script>
 </body>
 </html>
