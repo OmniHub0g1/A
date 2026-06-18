@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TeleLinks | شبكة تيليجرام</title>
+  <style>
+    /* ====== نفس الألوان والتصميم السابق ====== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: #f5f9fc;
+      color: #1e2a3a;
+    }
+    .header {
+      background-color: #0D5C75;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .logo {
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .logo span { color: #A5D1E1; }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    .header-actions .user-greeting {
+      color: #A5D1E1;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #A5D1E1;
+      color: white;
+      padding: 6px 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .btn-outline:hover {
+      background: #A5D1E1;
+      color: #0D5C75;
+    }
+    .btn-primary {
+      background: #199FB1;
+      border: none;
+      padding: 6px 22px;
+      border-radius: 30px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn-primary:hover {
+      background: #137a8a;
+    }
+    .search-box input {
+      padding: 8px 18px;
+      border-radius: 30px;
+      border: none;
+      width: 200px;
+      background: #f0f7fa;
+    }
+    .search-box button {
+      background-color: #199FB1;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 30px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .hero {
+      background: linear-gradient(135deg, #0D5C75, #199FB1);
+      color: white;
+      padding: 50px 40px;
+      text-align: center;
+    }
+    .hero h1 { font-size: 38px; }
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      padding: 25px 20px;
+      background: white;
+    }
+    .cat-badge {
+      background: #A5D1E1;
+      padding: 8px 22px;
+      border-radius: 50px;
+      font-weight: 600;
+      color: #0D5C75;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .cat-badge:hover {
+      background: #199FB1;
+      color: white;
+    }
+    .section-title {
+      font-size: 26px;
+      padding: 25px 40px 5px;
+      color: #0D5C75;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 25px;
+      padding: 15px 40px 30px;
+    }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 6px 18px rgba(13, 92, 117, 0.10);
+      border-right: 6px solid #199FB1;
+      transition: 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 28px rgba(13, 92, 117, 0.20);
+    }
+    .card h3 { color: #0D5C75; }
+    .card .tag {
+      background: #A5D1E1;
+      display: inline-block;
+      padding: 3px 14px;
+      border-radius: 30px;
+      font-size: 13px;
+      color: #0D5C75;
+      font-weight: 600;
+    }
+    .card .stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 12px;
+      color: #0D5C75;
+      font-weight: 500;
+    }
+    .btn {
+      background: #199FB1;
+      color: white;
+      border: none;
+      padding: 7px 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn:hover { background: #0D5C75; }
+    .footer {
+      background: #0D5C75;
+      color: #A5D1E1;
+      text-align: center;
+      padding: 25px;
+      margin-top: 30px;
+    }
+    .footer a { color: white; text-decoration: none; margin: 0 8px; }
+
+    /* ====== نماذج تسجيل الدخول والتسجيل (مودال) ====== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: white;
+      padding: 35px 30px;
+      border-radius: 30px;
+      width: 400px;
+      max-width: 95%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    .modal-box h2 {
+      color: #0D5C75;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .modal-box input {
+      width: 100%;
+      padding: 12px 18px;
+      margin-bottom: 15px;
+      border: 2px solid #dce9f0;
+      border-radius: 30px;
+      font-size: 16px;
+      background: #f8fbfd;
+    }
+    .modal-box input:focus {
+      outline: none;
+      border-color: #199FB1;
+    }
+    .modal-box .btn-primary {
+      width: 100%;
+      padding: 12px;
+      font-size: 18px;
+      margin-top: 5px;
+    }
+    .modal-box .switch-link {
+      text-align: center;
+      margin-top: 15px;
+      color: #0D5C75;
+      cursor: pointer;
+    }
+    .modal-box .switch-link span {
+      font-weight: bold;
+      color: #199FB1;
+    }
+    .modal-box .close-modal {
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      font-size: 28px;
+      cursor: pointer;
+      color: #888;
+      background: none;
+      border: none;
+    }
+    .modal-box .error-msg {
+      color: #d32f2f;
+      background: #ffebee;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+      margin-bottom: 15px;
+      display: none;
+    }
+    .modal-box .error-msg.show { display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- ====== HEADER ====== -->
+  <header class="header">
+    <div class="logo">Tele<span>Links</span></div>
+    <div class="header-actions">
+      <!-- منطقة البحث -->
+      <div class="search-box">
+        <input type="text" placeholder="ابحث..." />
+        <button>بحث</button>
+      </div>
+      <!-- منطقة المستخدم -->
+      <div id="userSection">
+        <span class="user-greeting" id="greeting">مرحباً، زائر</span>
+        <button class="btn-outline" id="loginBtn" style="display:inline-block;">تسجيل الدخول</button>
+        <button class="btn-outline" id="signupBtn" style="display:inline-block;">إنشاء حساب</button>
+        <button class="btn-primary" id="logoutBtn" style="display:none;">تسجيل خروج</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====== HERO ====== -->
+  <section class="hero">
+    <h1>🚀 اكتشف أفضل قنوات ومجموعات تيليجرام</h1>
+    <p>TeleLinks | شبكة تيليجرام – دليلك الشامل لمجتمع التلغرام العربي</p>
+  </section>
+
+  <!-- ====== التصنيفات ====== -->
+  <div class="categories">
+    <span class="cat-badge">📚 كتب وروايات</span>
+    <span class="cat-badge">🎮 ألعاب</span>
+    <span class="cat-badge">🤖 ذكاء اصطناعي</span>
+    <span class="cat-badge">💻 تقنية</span>
+    <span class="cat-badge">🎓 تعليم</span>
+    <span class="cat-badge">📰 أخبار</span>
+    <span class="cat-badge">⚽ رياضة</span>
+    <span class="cat-badge">🎬 أفلام ومسلسلات</span>
+    <span class="cat-badge">🎨 تصميم</span>
+    <span class="cat-badge">🐍 برمجة</span>
+  </div>
+
+  <!-- ====== المحتوى ====== -->
+  <h2 class="section-title">✨ أحدث الإضافات</h2>
+  <div class="card-grid">
+    <div class="card"><h3>قناة كتب مسموعة</h3><p>أكثر من 500 كتاب عربي</p><span class="tag">📚 كتب</span><div class="stats"><span>⭐ 4.8</span><span>👁️ 1.2k</span></div><button class="btn">انضمام</button></div>
+    <div class="card"><h3>بوت تلخيص النصوص</h3><p>يلخص أي نص بذكاء اصطناعي</p><span class="tag">🤖 ذكاء</span><div class="stats"><span>⭐ 4.9</span><span>👁️ 850</span></div><button class="btn">تجربة</button></div>
+    <div class="card"><h3>مجموعة مطوري الويب</h3><p>نقاشات تقنية وفرص عمل</p><span class="tag">💻 تقنية</span><div class="stats"><span>⭐ 4.7</span><span>👁️ 2.3k</span></div><button class="btn">انضمام</button></div>
+  </div>
+
+  <h2 class="section-title">⭐ القنوات المميزة</h2>
+  <div class="card-grid">
+    <div class="card" style="border-right-color:#0D5C75;"><h3>أخبار التكنولوجيا</h3><p>أحدث الأخبار يومياً</p><span class="tag">📰 أخبار</span><div class="stats"><span>⭐ 4.9</span><span>👁️ 5.4k</span></div><button class="btn">انضمام</button></div>
+    <div class="card" style="border-right-color:#0D5C75;"><h3>دروس البرمجة</h3><p>تعلم بايثون، جافا، سي شارب</p><span class="tag">🐍 برمجة</span><div class="stats"><span>⭐ 4.8</span><span>👁️ 3.1k</span></div><button class="btn">انضمام</button></div>
+  </div>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="footer">
+    <p>© 2026 TeleLinks | شبكة تيليجرام</p>
+    <p><a href="#">سياسة الخصوصية</a> | <a href="#">اتصل بنا</a> | <a href="#">لوحة الإدارة</a></p>
+  </footer>
+
+  <!-- ====== مودال تسجيل الدخول / التسجيل ====== -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-box">
+      <button class="close-modal" id="closeModalBtn">✕</button>
+      <h2 id="modalTitle">تسجيل الدخول</h2>
+      <div class="error-msg" id="authError"></div>
+
+      <!-- حقل اسم المستخدم (يظهر فقط في التسجيل) -->
+      <input type="text" id="usernameInput" placeholder="اسم المستخدم (ظاهر للجميع)" style="display:none;" />
+
+      <input type="email" id="emailInput" placeholder="البريد الإلكتروني" />
+      <input type="password" id="passwordInput" placeholder="كلمة المرور (6 أحرف على الأقل)" />
+
+      <button class="btn-primary" id="submitAuthBtn">دخول</button>
+
+      <div class="switch-link" id="switchAuthMode">
+        ليس لديك حساب؟ <span>أنشئ حساباً جديداً</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- ====== FIREBASE (Auth + Firestore + Realtime) ====== -->
+  <!-- ================================================ -->
+  <script type="module">
+    // ----- استيراد Firebase -----
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+    import { 
+      getAuth, 
+      createUserWithEmailAndPassword, 
+      signInWithEmailAndPassword, 
+      onAuthStateChanged, 
+      signOut,
+      updateProfile 
+    } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+    import { 
+      getFirestore, 
+      doc, 
+      setDoc, 
+      getDoc, 
+      collection, 
+      query, 
+      where, 
+      getDocs,
+      serverTimestamp 
+    } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+    // (اختياري) إذا أردت استخدام Realtime DB أيضاً، استوردها بنفس الطريقة
+    // import { getDatabase } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js";
+
+    // ----- الإعدادات (خاصة بمشروعك) -----
+    const firebaseConfig = {
+      apiKey: "AIzaSyBWiYLQRX3OuGkb_Ro2yNZenLvfESVW3n8",
+      authDomain: "telelinks-83dfd.firebaseapp.com",
+      projectId: "telelinks-83dfd",
+      storageBucket: "telelinks-83dfd.firebasestorage.app",
+      messagingSenderId: "501680807752",
+      appId: "1:501680807752:web:a71006bf86e7d610971d7d",
+      measurementId: "G-RTR1CCDFE9"
+    };
+
+    // ----- تهيئة Firebase -----
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // ----- عناصر DOM -----
+    const greeting = document.getElementById('greeting');
+    const loginBtn = document.getElementById('loginBtn');
+    const signupBtn = document.getElementById('signupBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    const modal = document.getElementById('authModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalTitle = document.getElementById('modalTitle');
+    const emailInput = document.getElementById('emailInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const usernameInput = document.getElementById('usernameInput');
+    const submitBtn = document.getElementById('submitAuthBtn');
+    const switchLink = document.getElementById('switchAuthMode');
+    const errorMsg = document.getElementById('authError');
+
+    let isLoginMode = true; // true = تسجيل دخول، false = تسجيل
+
+    // ----- وظائف مساعدة -----
+    function showError(text) {
+      errorMsg.textContent = text;
+      errorMsg.classList.add('show');
+    }
+    function hideError() {
+      errorMsg.classList.remove('show');
+    }
+
+    // تبديل الوضع بين تسجيل الدخول والتسجيل
+    function setMode(loginMode) {
+      isLoginMode = loginMode;
+      hideError();
+      if (loginMode) {
+        modalTitle.textContent = 'تسجيل الدخول';
+        submitBtn.textContent = 'دخول';
+        switchLink.innerHTML = 'ليس لديك حساب؟ <span>أنشئ حساباً جديداً</span>';
+        usernameInput.style.display = 'none';
+        usernameInput.value = '';
+        passwordInput.placeholder = 'كلمة المرور';
+      } else {
+        modalTitle.textContent = 'إنشاء حساب جديد';
+        submitBtn.textContent = 'إنشاء حساب';
+        switchLink.innerHTML = 'لديك حساب بالفعل؟ <span>سجل دخولك</span>';
+        usernameInput.style.display = 'block';
+        usernameInput.placeholder = 'اسم المستخدم (ظاهر للجميع)';
+        passwordInput.placeholder = 'كلمة المرور (6 أحرف على الأقل)';
+      }
+    }
+
+    // فتح المودال
+    function openModal(mode) {
+      setMode(mode);
+      modal.classList.add('active');
+      emailInput.value = '';
+      passwordInput.value = '';
+      usernameInput.value = '';
+      hideError();
+    }
+
+    // إغلاق المودال
+    function closeModal() {
+      modal.classList.remove('active');
+    }
+
+    // ----- التحقق من تفرد اسم المستخدم في Firestore -----
+    async function isUsernameTaken(username) {
+      try {
+        const q = query(collection(db, "users"), where("username", "==", username));
+        const snapshot = await getDocs(q);
+        return !snapshot.empty;
+      } catch (e) {
+        console.warn("التحقق من اسم المستخدم فشل، نعتبره غير مأخوذ.", e);
+        return false; // في حال خطأ القراءة (مثل وضع الاختبار) نكمل عادي
+      }
+    }
+
+    // ----- معالج تسجيل الدخول / التسجيل -----
+    async function handleAuthSubmit() {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      const username = usernameInput.value.trim();
+
+      if (!email || !password) {
+        showError('يرجى ملء البريد الإلكتروني وكلمة المرور.');
+        return;
+      }
+      if (!isLoginMode && !username) {
+        showError('يرجى إدخال اسم مستخدم.');
+        return;
+      }
+      if (!isLoginMode && password.length < 6) {
+        showError('كلمة المرور يجب أن تكون 6 أحرف على الأقل.');
+        return;
+      }
+
+      hideError();
+
+      try {
+        if (isLoginMode) {
+          // ----- تسجيل الدخول -----
+          const userCred = await signInWithEmailAndPassword(auth, email, password);
+          console.log("✅ تم تسجيل الدخول:", userCred.user.uid);
+          closeModal();
+        } else {
+          // ----- إنشاء حساب جديد مع اسم المستخدم -----
+          // 1. التحقق من تفرد اسم المستخدم
+          const taken = await isUsernameTaken(username);
+          if (taken) {
+            showError('اسم المستخدم هذا مستخدم بالفعل. اختر اسماً آخر.');
+            return;
+          }
+
+          // 2. إنشاء الحساب في Firebase Auth
+          const userCred = await createUserWithEmailAndPassword(auth, email, password);
+          const uid = userCred.user.uid;
+
+          // 3. حفظ اسم المستخدم في Firestore (مجموعة users)
+          await setDoc(doc(db, "users", uid), {
+            username: username,
+            email: email,
+            createdAt: serverTimestamp()
+          });
+
+          // 4. (اختياري) تحديث الاسم المعروض في Auth
+          await updateProfile(userCred.user, { displayName: username });
+
+          console.log("✅ تم إنشاء الحساب وحفظ اسم المستخدم:", username);
+          closeModal();
+        }
+      } catch (error) {
+        console.error("🔥 خطأ في المصادقة:", error);
+        let msg = 'حدث خطأ ما. تأكد من بياناتك.';
+        if (error.code === 'auth/user-not-found') msg = 'البريد الإلكتروني غير مسجل.';
+        else if (error.code === 'auth/wrong-password') msg = 'كلمة المرور خاطئة.';
+        else if (error.code === 'auth/email-already-in-use') msg = 'البريد الإلكتروني مستخدم بالفعل.';
+        else if (error.code === 'auth/weak-password') msg = 'كلمة المرور ضعيفة جداً (6 أحرف على الأقل).';
+        else if (error.code === 'auth/invalid-email') msg = 'صيغة البريد الإلكتروني غير صحيحة.';
+        showError(msg);
+      }
+    }
+
+    // ----- تحديث واجهة المستخدم حسب حالة Auth -----
+    async function updateUI(user) {
+      if (user) {
+        // جلب اسم المستخدم من Firestore
+        try {
+          const docSnap = await getDoc(doc(db, "users", user.uid));
+          let displayName = user.displayName || 'مستخدم';
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            if (data.username) displayName = data.username;
+          }
+          greeting.textContent = `👋 مرحباً، ${displayName}`;
+        } catch (e) {
+          greeting.textContent = `👋 مرحباً، ${user.displayName || 'مستخدم'}`;
+        }
+
+        loginBtn.style.display = 'none';
+        signupBtn.style.display = 'none';
+        logoutBtn.style.display = 'inline-block';
+      } else {
+        greeting.textContent = 'مرحباً، زائر';
+        loginBtn.style.display = 'inline-block';
+        signupBtn.style.display = 'inline-block';
+        logoutBtn.style.display = 'none';
+        // إغلاق المودال إن كان مفتوحاً
+        closeModal();
+      }
+    }
+
+    // ----- مراقب حالة تسجيل الدخول -----
+    onAuthStateChanged(auth, (user) => {
+      updateUI(user);
+    });
+
+    // ----- تسجيل الخروج -----
+    logoutBtn.addEventListener('click', async () => {
+      try {
+        await signOut(auth);
+        console.log("👋 تم تسجيل الخروج");
+      } catch (e) {
+        console.error("خطأ في تسجيل الخروج:", e);
+      }
+    });
+
+    // ----- أحداث الأزرار والنماذج -----
+    loginBtn.addEventListener('click', () => openModal(true));
+    signupBtn.addEventListener('click', () => openModal(false));
+    closeModalBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // تبديل الوضع داخل المودال
+    switchLink.addEventListener('click', () => {
+      setMode(!isLoginMode);
+    });
+
+    // تقديم النموذج عند الضغط على Enter أو الزر
+    submitBtn.addEventListener('click', handleAuthSubmit);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && modal.classList.contains('active')) {
+        handleAuthSubmit();
+      }
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // ----- تحقق إضافي: عند إغلاق المودال نعيد ضبط الأخطاء -----
+    console.log("🚀 TeleLinks with Firebase Auth + Firestore is ready!");
+  </script>
+</body>
+</html>
