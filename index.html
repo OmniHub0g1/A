@@ -29,6 +29,7 @@
       color: white;
       font-size: 28px;
       font-weight: bold;
+      cursor: pointer;
     }
     .logo span { color: #A5D1E1; }
     .header-actions {
@@ -68,6 +69,22 @@
     }
     .btn-primary:hover {
       background: #137a8a;
+    }
+    /* زر النشر الجديد */
+    .btn-publish {
+      background: #ffb74d;
+      color: #0D5C75;
+      border: none;
+      padding: 6px 22px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 4px 10px rgba(255, 183, 77, 0.4);
+    }
+    .btn-publish:hover {
+      background: #ffa726;
+      transform: scale(1.03);
     }
     .search-box input {
       padding: 8px 18px;
@@ -113,6 +130,10 @@
       background: #199FB1;
       color: white;
     }
+    .cat-badge.active {
+      background: #199FB1;
+      color: white;
+    }
     .section-title {
       font-size: 26px;
       padding: 25px 40px 5px;
@@ -131,6 +152,7 @@
       box-shadow: 0 6px 18px rgba(13, 92, 117, 0.10);
       border-right: 6px solid #199FB1;
       transition: 0.3s;
+      cursor: pointer;
     }
     .card:hover {
       transform: translateY(-5px);
@@ -246,61 +268,332 @@
       display: none;
     }
     .modal-box .error-msg.show { display: block; }
+
+    /* ====== الأنماط الجديدة للإضافات ====== */
+    /* صفحات مخفية */
+    .page { display: none; padding: 20px 30px; max-width: 1200px; margin: 0 auto; }
+    .page.active { display: block; }
+
+    /* نموذج النشر */
+    .publish-container {
+      background: white;
+      border-radius: 30px;
+      padding: 30px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+    .publish-container h2 { color: #0D5C75; margin-bottom: 8px; }
+    .publish-container .sub {
+      color: #5a6f7e;
+      margin-bottom: 25px;
+      font-size: 15px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      color: #0D5C75;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+    .form-group label .hint {
+      font-weight: normal;
+      color: #6f8a9b;
+      font-size: 13px;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 12px 18px;
+      border: 2px solid #dce9f0;
+      border-radius: 16px;
+      font-size: 15px;
+      background: #f8fbfd;
+      transition: 0.3s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: #199FB1;
+      box-shadow: 0 0 0 4px rgba(25, 159, 177, 0.15);
+    }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .analyze-box {
+      background: #eaf4f8;
+      border-radius: 16px;
+      padding: 18px 22px;
+      margin-bottom: 25px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 15px;
+    }
+    .analyze-box input { flex: 2; min-width: 200px; }
+    .analyze-box button { flex: 0 0 auto; }
+    .analyze-result {
+      background: #f0f7fa;
+      border-radius: 16px;
+      padding: 15px 20px;
+      margin-top: 15px;
+      display: none;
+      border-right: 4px solid #199FB1;
+    }
+    .analyze-result.show { display: block; }
+    .analyze-result img { max-width: 80px; border-radius: 16px; margin-left: 15px; }
+    .analyze-result .info { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+
+    /* صفحة العرض */
+    .post-view-container {
+      background: white;
+      border-radius: 30px;
+      padding: 30px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+    .post-header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      align-items: flex-start;
+      margin-bottom: 25px;
+    }
+    .post-cover {
+      width: 120px;
+      height: 120px;
+      border-radius: 24px;
+      background: #A5D1E1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      color: #0D5C75;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .post-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .post-title-area { flex: 1; }
+    .post-title-area h1 { color: #0D5C75; font-size: 32px; }
+    .post-title-area .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 8px;
+      color: #3a5a6a;
+    }
+    .post-title-area .meta span { background: #eef5f8; padding: 4px 14px; border-radius: 30px; font-size: 14px; }
+    .join-btn-fixed {
+      background: #199FB1;
+      color: white;
+      border: none;
+      padding: 14px 40px;
+      border-radius: 60px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 6px 20px rgba(25, 159, 177, 0.4);
+      align-self: center;
+      white-space: nowrap;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .join-btn-fixed:hover { background: #0D5C75; transform: scale(1.03); }
+    .post-body {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+      margin-top: 20px;
+    }
+    .post-description h3 { color: #0D5C75; margin-top: 20px; }
+    .post-description p { line-height: 1.8; color: #1f3342; }
+    .post-sidebar {
+      background: #f5f9fc;
+      padding: 20px;
+      border-radius: 20px;
+    }
+    .post-sidebar .stat-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #dce9f0;
+    }
+    .post-sidebar .stat-item:last-child { border: none; }
+
+    /* رسائل */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0D5C75;
+      color: white;
+      padding: 14px 30px;
+      border-radius: 60px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      z-index: 999;
+      display: none;
+    }
+    .toast.show { display: block; }
+
+    /* استجابة */
+    @media (max-width: 700px) {
+      .header { flex-direction: column; align-items: stretch; }
+      .header-actions { justify-content: center; }
+      .search-box input { width: 120px; }
+      .form-row { grid-template-columns: 1fr; }
+      .post-body { grid-template-columns: 1fr; }
+      .post-header { flex-direction: column; align-items: center; text-align: center; }
+      .join-btn-fixed { width: 100%; text-align: center; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- ====== HEADER ====== -->
+  <!-- ====== HEADER (معدل قليلاً لإضافة زر النشر) ====== -->
   <header class="header">
-    <div class="logo">Tele<span>Links</span></div>
+    <div class="logo" onclick="navigateTo('home')">Tele<span>Links</span></div>
     <div class="header-actions">
       <!-- منطقة البحث -->
       <div class="search-box">
-        <input type="text" placeholder="ابحث..." />
-        <button>بحث</button>
+        <input type="text" id="globalSearch" placeholder="ابحث..." />
+        <button onclick="searchPosts()">بحث</button>
       </div>
       <!-- منطقة المستخدم -->
       <div id="userSection">
         <span class="user-greeting" id="greeting">مرحباً، زائر</span>
         <button class="btn-outline" id="loginBtn" style="display:inline-block;">تسجيل الدخول</button>
         <button class="btn-outline" id="signupBtn" style="display:inline-block;">إنشاء حساب</button>
+        <button class="btn-publish" id="publishNavBtn" style="display:none;" onclick="navigateTo('publish')">➕ نشر</button>
         <button class="btn-primary" id="logoutBtn" style="display:none;">تسجيل خروج</button>
       </div>
     </div>
   </header>
 
-  <!-- ====== HERO ====== -->
-  <section class="hero">
-    <h1>🚀 اكتشف أفضل قنوات ومجموعات تيليجرام</h1>
-    <p>TeleLinks | شبكة تيليجرام – دليلك الشامل لمجتمع التلغرام العربي</p>
-  </section>
+  <!-- ====== الصفحة الرئيسية ====== -->
+  <div id="homePage" class="page active">
+    <!-- ====== HERO ====== -->
+    <section class="hero">
+      <h1>🚀 اكتشف أفضل قنوات ومجموعات تيليجرام</h1>
+      <p>TeleLinks | شبكة تيليجرام – دليلك الشامل لمجتمع التلغرام العربي</p>
+    </section>
 
-  <!-- ====== التصنيفات ====== -->
-  <div class="categories">
-    <span class="cat-badge">📚 كتب وروايات</span>
-    <span class="cat-badge">🎮 ألعاب</span>
-    <span class="cat-badge">🤖 ذكاء اصطناعي</span>
-    <span class="cat-badge">💻 تقنية</span>
-    <span class="cat-badge">🎓 تعليم</span>
-    <span class="cat-badge">📰 أخبار</span>
-    <span class="cat-badge">⚽ رياضة</span>
-    <span class="cat-badge">🎬 أفلام ومسلسلات</span>
-    <span class="cat-badge">🎨 تصميم</span>
-    <span class="cat-badge">🐍 برمجة</span>
+    <!-- ====== التصنيفات ====== -->
+    <div class="categories" id="categoryFilter">
+      <span class="cat-badge active" data-cat="all" onclick="filterPosts('all')">الكل</span>
+      <span class="cat-badge" data-cat="كتب وروايات" onclick="filterPosts('كتب وروايات')">📚 كتب وروايات</span>
+      <span class="cat-badge" data-cat="ألعاب" onclick="filterPosts('ألعاب')">🎮 ألعاب</span>
+      <span class="cat-badge" data-cat="ذكاء اصطناعي" onclick="filterPosts('ذكاء اصطناعي')">🤖 ذكاء اصطناعي</span>
+      <span class="cat-badge" data-cat="تقنية" onclick="filterPosts('تقنية')">💻 تقنية</span>
+      <span class="cat-badge" data-cat="تعليم" onclick="filterPosts('تعليم')">🎓 تعليم</span>
+      <span class="cat-badge" data-cat="أخبار" onclick="filterPosts('أخبار')">📰 أخبار</span>
+      <span class="cat-badge" data-cat="رياضة" onclick="filterPosts('رياضة')">⚽ رياضة</span>
+      <span class="cat-badge" data-cat="أفلام ومسلسلات" onclick="filterPosts('أفلام ومسلسلات')">🎬 أفلام ومسلسلات</span>
+      <span class="cat-badge" data-cat="تصميم" onclick="filterPosts('تصميم')">🎨 تصميم</span>
+      <span class="cat-badge" data-cat="برمجة" onclick="filterPosts('برمجة')">🐍 برمجة</span>
+    </div>
+
+    <!-- ====== المحتوى ====== -->
+    <h2 class="section-title">✨ أحدث الإضافات</h2>
+    <div id="postsGrid" class="card-grid">
+      <div style="text-align:center;padding:40px;color:#6f8a9b;width:100%;">⏳ جاري تحميل المنشورات...</div>
+    </div>
   </div>
 
-  <!-- ====== المحتوى ====== -->
-  <h2 class="section-title">✨ أحدث الإضافات</h2>
-  <div class="card-grid">
-    <div class="card"><h3>قناة كتب مسموعة</h3><p>أكثر من 500 كتاب عربي</p><span class="tag">📚 كتب</span><div class="stats"><span>⭐ 4.8</span><span>👁️ 1.2k</span></div><button class="btn">انضمام</button></div>
-    <div class="card"><h3>بوت تلخيص النصوص</h3><p>يلخص أي نص بذكاء اصطناعي</p><span class="tag">🤖 ذكاء</span><div class="stats"><span>⭐ 4.9</span><span>👁️ 850</span></div><button class="btn">تجربة</button></div>
-    <div class="card"><h3>مجموعة مطوري الويب</h3><p>نقاشات تقنية وفرص عمل</p><span class="tag">💻 تقنية</span><div class="stats"><span>⭐ 4.7</span><span>👁️ 2.3k</span></div><button class="btn">انضمام</button></div>
+  <!-- ====== صفحة النشر (جديدة) ====== -->
+  <div id="publishPage" class="page">
+    <div class="publish-container">
+      <h2>✍️ إنشاء منشور جديد</h2>
+      <p class="sub">انشر قناتك أو مجموعتك أو بوتك ليستفيد منه آلاف المستخدمين.</p>
+
+      <!-- قسم تحليل الرابط -->
+      <div class="analyze-box">
+        <input type="url" id="analyzeInput" placeholder="https://t.me/example" style="flex:2;" />
+        <button class="btn-primary" onclick="analyzeLink()">🔍 تحليل الرابط</button>
+      </div>
+      <div id="analyzeResult" class="analyze-result">
+        <div class="info">
+          <img id="analyzeImg" src="" alt="صورة" />
+          <div>
+            <strong id="analyzeName">الاسم</strong><br />
+            <span id="analyzeType">النوع: قناة</span><br />
+            <span id="analyzeDesc" style="font-size:14px;color:#3a5a6a;">وصف مختصر</span>
+          </div>
+        </div>
+        <p style="margin-top:10px;font-size:13px;color:#4f6f80;">✅ تم جلب البيانات تلقائياً. يمكنك تعديلها قبل النشر.</p>
+      </div>
+
+      <form id="publishForm" onsubmit="event.preventDefault(); publishPost();">
+        <!-- البيانات الأساسية -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>رابط تيليجرام <span class="hint">(مطلوب)</span></label>
+            <input type="url" id="postLink" placeholder="https://t.me/..." required />
+          </div>
+          <div class="form-group">
+            <label>اسم القناة / المجموعة / البوت <span class="hint">(مطلوب)</span></label>
+            <input type="text" id="postName" placeholder="الاسم الظاهر" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>التصنيف <span class="hint">(مطلوب)</span></label>
+            <select id="postCategory" required>
+              <option value="">اختر التصنيف</option>
+              <option>كتب وروايات</option><option>أنمي ومانغا</option><option>ألعاب</option>
+              <option>تقنية</option><option>ذكاء اصطناعي</option><option>تعليم</option>
+              <option>وظائف</option><option>أخبار</option><option>رياضة</option>
+              <option>أفلام ومسلسلات</option><option>تصميم</option><option>برمجة</option><option>أخرى</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>صورة الغلاف <span class="hint">(رابط صورة)</span></label>
+            <input type="url" id="postCover" placeholder="https://example.com/image.jpg" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>📝 الوصف المختصر <span class="hint">(يظهر في نتائج البحث – مطلوب)</span></label>
+          <textarea id="postShortDesc" rows="2" placeholder="مثال: قناة متخصصة في نشر الكتب والروايات العربية بصيغ متعددة مع تحديثات يومية." required></textarea>
+        </div>
+
+        <!-- البيانات التفصيلية -->
+        <div class="form-group">
+          <label>📄 الوصف الطويل <span class="hint">(صفحة تعريفية كاملة)</span></label>
+          <textarea id="postLongDesc" rows="5" placeholder="اشرح بالتفصيل: طبيعة المحتوى، الفائدة للمستخدم، مميزات المجتمع، سبب التميز..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>🏷️ الكلمات المفتاحية</label>
+            <input type="text" id="postKeywords" placeholder="كتب، روايات، تحميل، عربية" />
+          </div>
+          <div class="form-group">
+            <label>✨ مميزات القناة</label>
+            <input type="text" id="postFeatures" placeholder="تحديث يومي، محتوى حصري، تفاعل" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>🌐 لغة المحتوى</label>
+            <input type="text" id="postLang" placeholder="العربية" />
+          </div>
+          <div class="form-group">
+            <label>📍 الدولة المستهدفة <span class="hint">(اختياري)</span></label>
+            <input type="text" id="postCountry" placeholder="مصر، السعودية، كل الدول..." />
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary" style="padding:14px 40px;font-size:18px;width:100%;margin-top:10px;">🚀 نشر المنشور</button>
+      </form>
+    </div>
   </div>
 
-  <h2 class="section-title">⭐ القنوات المميزة</h2>
-  <div class="card-grid">
-    <div class="card" style="border-right-color:#0D5C75;"><h3>أخبار التكنولوجيا</h3><p>أحدث الأخبار يومياً</p><span class="tag">📰 أخبار</span><div class="stats"><span>⭐ 4.9</span><span>👁️ 5.4k</span></div><button class="btn">انضمام</button></div>
-    <div class="card" style="border-right-color:#0D5C75;"><h3>دروس البرمجة</h3><p>تعلم بايثون، جافا، سي شارب</p><span class="tag">🐍 برمجة</span><div class="stats"><span>⭐ 4.8</span><span>👁️ 3.1k</span></div><button class="btn">انضمام</button></div>
+  <!-- ====== صفحة عرض المنشور (جديدة) ====== -->
+  <div id="postPage" class="page">
+    <div class="post-view-container" id="postViewContainer">
+      <!-- يتم ملؤها بواسطة JavaScript -->
+    </div>
   </div>
 
   <!-- ====== FOOTER ====== -->
@@ -330,6 +623,9 @@
     </div>
   </div>
 
+  <!-- ====== Toast ====== -->
+  <div id="toast" class="toast"></div>
+
   <!-- ================================================ -->
   <!-- ====== FIREBASE (Auth + Firestore + Realtime) ====== -->
   <!-- ================================================ -->
@@ -353,10 +649,11 @@
       query, 
       where, 
       getDocs,
+      addDoc,
+      onSnapshot,
+      orderBy,
       serverTimestamp 
     } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
-    // (اختياري) إذا أردت استخدام Realtime DB أيضاً، استوردها بنفس الطريقة
-    // import { getDatabase } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js";
 
     // ----- الإعدادات (خاصة بمشروعك) -----
     const firebaseConfig = {
@@ -374,12 +671,253 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // ----- عناصر DOM -----
+    // ----- عناصر DOM (الأصلية) -----
     const greeting = document.getElementById('greeting');
     const loginBtn = document.getElementById('loginBtn');
     const signupBtn = document.getElementById('signupBtn');
     const logoutBtn = document.getElementById('logoutBtn');
+    const publishNavBtn = document.getElementById('publishNavBtn');
 
+    // ----- عناصر جديدة -----
+    const postsGrid = document.getElementById('postsGrid');
+    const globalSearch = document.getElementById('globalSearch');
+
+    // ----- متغيرات عامة -----
+    let currentUser = null;
+    let allPosts = [];
+    let currentFilter = 'all';
+
+    // ----- دوال التنقل بين الصفحات (جديدة) -----
+    window.navigateTo = function(page, param = null) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      if (page === 'home') {
+        document.getElementById('homePage').classList.add('active');
+        window.location.hash = '#home';
+        renderPosts(allPosts);
+      } else if (page === 'publish') {
+        if (!currentUser) {
+          showToast('⚠️ يرجى تسجيل الدخول أولاً');
+          openModal(true);
+          return;
+        }
+        document.getElementById('publishPage').classList.add('active');
+        window.location.hash = '#publish';
+      } else if (page === 'post') {
+        document.getElementById('postPage').classList.add('active');
+        window.location.hash = '#post';
+        renderPostView(param);
+      }
+    };
+
+    // ----- عرض المنشورات (جديدة) -----
+    function renderPosts(posts) {
+      const filtered = currentFilter === 'all' ? posts : posts.filter(p => p.category === currentFilter);
+      if (filtered.length === 0) {
+        postsGrid.innerHTML = `<div style="text-align:center;padding:40px;color:#6f8a9b;width:100%;">🚫 لا توجد منشورات في هذا التصنيف.</div>`;
+        return;
+      }
+      postsGrid.innerHTML = filtered.map(post => `
+        <div class="card" onclick="navigateTo('post', '${post.id}')">
+          <h3>${post.name || 'بدون اسم'}</h3>
+          <p>${post.shortDesc || '...'}</p>
+          <span class="tag">${post.category || 'عام'}</span>
+          <div class="stats">
+            <span>⭐ ${post.likes || 0}</span>
+            <span>👁️ ${post.views || 0}</span>
+            <span>💾 ${post.saves || 0}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ----- جلب المنشورات من Firestore (Realtime) (جديدة) -----
+    function listenToPosts() {
+      const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+      onSnapshot(q, (snapshot) => {
+        allPosts = [];
+        snapshot.forEach(doc => {
+          allPosts.push({ id: doc.id, ...doc.data() });
+        });
+        if (document.getElementById('homePage').classList.contains('active')) {
+          renderPosts(allPosts);
+        }
+      }, (error) => {
+        console.error("خطأ في جلب المنشورات:", error);
+        postsGrid.innerHTML = `<div style="text-align:center;padding:40px;color:red;">❌ حدث خطأ في تحميل البيانات.</div>`;
+      });
+    }
+
+    // ----- عرض صفحة منشور واحد (جديدة) -----
+    window.renderPostView = function(postId) {
+      const container = document.getElementById('postViewContainer');
+      const post = allPosts.find(p => p.id === postId);
+      if (!post) {
+        container.innerHTML = `<div style="text-align:center;padding:40px;color:#6f8a9b;">⚠️ المنشور غير موجود.</div>`;
+        return;
+      }
+      // زيادة عدد الزيارات
+      const postRef = doc(db, "posts", postId);
+      getDoc(postRef).then(docSnap => {
+        if (docSnap.exists()) {
+          const currentViews = docSnap.data().views || 0;
+          setDoc(postRef, { views: currentViews + 1 }, { merge: true });
+        }
+      }).catch(e => console.warn("زيادة الزيارات فشلت", e));
+
+      const coverHtml = post.cover ? `<img src="${post.cover}" alt="غلاف" />` : '📢';
+      container.innerHTML = `
+        <div class="post-header">
+          <div class="post-cover">${coverHtml}</div>
+          <div class="post-title-area">
+            <h1>${post.name}</h1>
+            <div class="meta">
+              <span>🏷️ ${post.category || 'عام'}</span>
+              <span>🔗 <a href="${post.link}" target="_blank" style="color:#199FB1;">${post.link}</a></span>
+              <span>👤 بواسطة ${post.ownerName || 'مستخدم'}</span>
+            </div>
+          </div>
+          <a href="${post.link}" target="_blank" class="join-btn-fixed">➕ انضم الآن</a>
+        </div>
+        <div class="post-body">
+          <div class="post-description">
+            <h3>📝 نبذة مختصرة</h3>
+            <p>${post.shortDesc || 'لا يوجد وصف مختصر.'}</p>
+            <h3>📄 وصف تفصيلي</h3>
+            <p>${post.longDesc || 'لا يوجد وصف طويل.'}</p>
+            ${post.features ? `<h3>✨ مميزات</h3><p>${post.features}</p>` : ''}
+            ${post.keywords ? `<h3>🏷️ كلمات مفتاحية</h3><p>${post.keywords}</p>` : ''}
+          </div>
+          <div class="post-sidebar">
+            <div class="stat-item"><span>⭐ التقييم</span><span>${post.likes || 0}</span></div>
+            <div class="stat-item"><span>👁️ الزيارات</span><span>${(post.views || 0) + 1}</span></div>
+            <div class="stat-item"><span>💾 الحفظ</span><span>${post.saves || 0}</span></div>
+            <div class="stat-item"><span>🌐 اللغة</span><span>${post.lang || 'غير محدد'}</span></div>
+            <div class="stat-item"><span>📍 الدولة</span><span>${post.country || 'كل الدول'}</span></div>
+            <div class="stat-item"><span>📅 النشر</span><span>${post.createdAt ? new Date(post.createdAt.seconds * 1000).toLocaleDateString('ar') : 'حديث'}</span></div>
+            <hr style="margin:15px 0;border-color:#dce9f0;" />
+            <a href="${post.link}" target="_blank" class="btn-primary" style="display:block;text-align:center;padding:12px;width:100%;text-decoration:none;">🚀 انضم إلى القناة</a>
+          </div>
+        </div>
+      `;
+    };
+
+    // ----- تحليل الرابط (جديدة) -----
+    window.analyzeLink = async function() {
+      const input = document.getElementById('analyzeInput');
+      const link = input.value.trim();
+      if (!link || !link.includes('t.me')) {
+        showToast('⚠️ الرجاء إدخال رابط تيليجرام صحيح (مثل https://t.me/example)');
+        return;
+      }
+      const resultDiv = document.getElementById('analyzeResult');
+      resultDiv.classList.remove('show');
+      
+      try {
+        const response = await fetch(`https://t.me/oembed?url=${encodeURIComponent(link)}`);
+        if (!response.ok) throw new Error('فشل الجلب');
+        const data = await response.json();
+        
+        document.getElementById('postLink').value = link;
+        document.getElementById('postName').value = data.author_name || data.title || 'غير معروف';
+        if (data.thumbnail_url) document.getElementById('postCover').value = data.thumbnail_url;
+        const shortDesc = data.title ? `قناة ${data.author_name} - ${data.title}` : `قناة ${data.author_name}`;
+        document.getElementById('postShortDesc').value = shortDesc;
+
+        document.getElementById('analyzeImg').src = data.thumbnail_url || '';
+        document.getElementById('analyzeName').textContent = data.author_name || 'اسم غير معروف';
+        document.getElementById('analyzeType').textContent = `النوع: قناة / مجموعة`;
+        document.getElementById('analyzeDesc').textContent = data.title || 'لا يوجد وصف';
+        resultDiv.classList.add('show');
+
+        showToast('✅ تم تحليل الرابط بنجاح! راجع البيانات وتعديلها قبل النشر.');
+      } catch (error) {
+        console.warn('oEmbed فشل، نستخدم البيانات المستخرجة من الرابط فقط.', error);
+        const username = link.match(/t\.me\/([^\/?]+)/)?.[1] || 'example';
+        document.getElementById('postLink').value = link;
+        document.getElementById('postName').value = `قناة ${username}`;
+        document.getElementById('postShortDesc').value = `قناة ${username} على تيليجرام.`;
+        showToast('⚠️ لم نتمكن من جلب البيانات تلقائياً، لكن يمكنك إدخالها يدوياً.');
+      }
+    };
+
+    // ----- نشر المنشور (جديدة) -----
+    window.publishPost = async function() {
+      if (!currentUser) {
+        showToast('⚠️ يرجى تسجيل الدخول أولاً');
+        openModal(true);
+        return;
+      }
+      const link = document.getElementById('postLink').value.trim();
+      const name = document.getElementById('postName').value.trim();
+      const category = document.getElementById('postCategory').value;
+      const cover = document.getElementById('postCover').value.trim();
+      const shortDesc = document.getElementById('postShortDesc').value.trim();
+      const longDesc = document.getElementById('postLongDesc').value.trim();
+      const keywords = document.getElementById('postKeywords').value.trim();
+      const features = document.getElementById('postFeatures').value.trim();
+      const lang = document.getElementById('postLang').value.trim();
+      const country = document.getElementById('postCountry').value.trim();
+
+      if (!link || !name || !category || !shortDesc) {
+        showToast('⚠️ الرجاء ملء الحقول المطلوبة: الرابط، الاسم، التصنيف، الوصف المختصر.');
+        return;
+      }
+
+      try {
+        const postData = {
+          link, name, category, cover, shortDesc, longDesc,
+          keywords, features, lang, country,
+          ownerId: currentUser.uid,
+          ownerName: currentUser.displayName || 'مستخدم',
+          createdAt: serverTimestamp(),
+          views: 0,
+          likes: 0,
+          saves: 0
+        };
+        await addDoc(collection(db, "posts"), postData);
+        showToast('🎉 تم نشر المنشور بنجاح!');
+        document.getElementById('publishForm').reset();
+        document.getElementById('analyzeResult').classList.remove('show');
+        navigateTo('home');
+      } catch (e) {
+        console.error("خطأ في النشر:", e);
+        showToast('❌ حدث خطأ أثناء النشر. تأكد من اتصالك بالإنترنت.');
+      }
+    };
+
+    // ----- البحث (جديدة) -----
+    window.searchPosts = function() {
+      const q = globalSearch.value.trim().toLowerCase();
+      if (!q) { renderPosts(allPosts); return; }
+      const filtered = allPosts.filter(p => 
+        p.name?.toLowerCase().includes(q) || 
+        p.shortDesc?.toLowerCase().includes(q) ||
+        p.category?.toLowerCase().includes(q)
+      );
+      renderPosts(filtered);
+    };
+
+    // ----- فلترة حسب التصنيف (جديدة) -----
+    window.filterPosts = function(cat) {
+      currentFilter = cat;
+      document.querySelectorAll('.cat-badge').forEach(el => {
+        el.classList.toggle('active', el.dataset.cat === cat);
+      });
+      renderPosts(allPosts);
+    };
+
+    // ----- Toast (جديدة) -----
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(t._timeout);
+      t._timeout = setTimeout(() => t.classList.remove('show'), 3500);
+    }
+    window.showToast = showToast;
+
+    // ====== الكود الأصلي للمصادقة (لم يتم المساس به) ======
+    // ----- عناصر DOM للمودال (الأصلية) -----
     const modal = document.getElementById('authModal');
     const closeModalBtn = document.getElementById('closeModalBtn');
     const modalTitle = document.getElementById('modalTitle');
@@ -390,9 +928,8 @@
     const switchLink = document.getElementById('switchAuthMode');
     const errorMsg = document.getElementById('authError');
 
-    let isLoginMode = true; // true = تسجيل دخول، false = تسجيل
+    let isLoginMode = true;
 
-    // ----- وظائف مساعدة -----
     function showError(text) {
       errorMsg.textContent = text;
       errorMsg.classList.add('show');
@@ -401,7 +938,6 @@
       errorMsg.classList.remove('show');
     }
 
-    // تبديل الوضع بين تسجيل الدخول والتسجيل
     function setMode(loginMode) {
       isLoginMode = loginMode;
       hideError();
@@ -422,7 +958,6 @@
       }
     }
 
-    // فتح المودال
     function openModal(mode) {
       setMode(mode);
       modal.classList.add('active');
@@ -432,12 +967,10 @@
       hideError();
     }
 
-    // إغلاق المودال
     function closeModal() {
       modal.classList.remove('active');
     }
 
-    // ----- التحقق من تفرد اسم المستخدم في Firestore -----
     async function isUsernameTaken(username) {
       try {
         const q = query(collection(db, "users"), where("username", "==", username));
@@ -445,11 +978,10 @@
         return !snapshot.empty;
       } catch (e) {
         console.warn("التحقق من اسم المستخدم فشل، نعتبره غير مأخوذ.", e);
-        return false; // في حال خطأ القراءة (مثل وضع الاختبار) نكمل عادي
+        return false;
       }
     }
 
-    // ----- معالج تسجيل الدخول / التسجيل -----
     async function handleAuthSubmit() {
       const email = emailInput.value.trim();
       const password = passwordInput.value.trim();
@@ -472,33 +1004,23 @@
 
       try {
         if (isLoginMode) {
-          // ----- تسجيل الدخول -----
           const userCred = await signInWithEmailAndPassword(auth, email, password);
           console.log("✅ تم تسجيل الدخول:", userCred.user.uid);
           closeModal();
         } else {
-          // ----- إنشاء حساب جديد مع اسم المستخدم -----
-          // 1. التحقق من تفرد اسم المستخدم
           const taken = await isUsernameTaken(username);
           if (taken) {
             showError('اسم المستخدم هذا مستخدم بالفعل. اختر اسماً آخر.');
             return;
           }
-
-          // 2. إنشاء الحساب في Firebase Auth
           const userCred = await createUserWithEmailAndPassword(auth, email, password);
           const uid = userCred.user.uid;
-
-          // 3. حفظ اسم المستخدم في Firestore (مجموعة users)
           await setDoc(doc(db, "users", uid), {
             username: username,
             email: email,
             createdAt: serverTimestamp()
           });
-
-          // 4. (اختياري) تحديث الاسم المعروض في Auth
           await updateProfile(userCred.user, { displayName: username });
-
           console.log("✅ تم إنشاء الحساب وحفظ اسم المستخدم:", username);
           closeModal();
         }
@@ -514,10 +1036,9 @@
       }
     }
 
-    // ----- تحديث واجهة المستخدم حسب حالة Auth -----
+    // ----- تحديث واجهة المستخدم حسب حالة Auth (معدل قليلاً) -----
     async function updateUI(user) {
       if (user) {
-        // جلب اسم المستخدم من Firestore
         try {
           const docSnap = await getDoc(doc(db, "users", user.uid));
           let displayName = user.displayName || 'مستخدم';
@@ -526,29 +1047,32 @@
             if (data.username) displayName = data.username;
           }
           greeting.textContent = `👋 مرحباً، ${displayName}`;
+          currentUser = user;
         } catch (e) {
           greeting.textContent = `👋 مرحباً، ${user.displayName || 'مستخدم'}`;
+          currentUser = user;
         }
-
         loginBtn.style.display = 'none';
         signupBtn.style.display = 'none';
         logoutBtn.style.display = 'inline-block';
+        publishNavBtn.style.display = 'inline-block';
       } else {
         greeting.textContent = 'مرحباً، زائر';
         loginBtn.style.display = 'inline-block';
         signupBtn.style.display = 'inline-block';
         logoutBtn.style.display = 'none';
-        // إغلاق المودال إن كان مفتوحاً
+        publishNavBtn.style.display = 'none';
+        currentUser = null;
         closeModal();
       }
     }
 
-    // ----- مراقب حالة تسجيل الدخول -----
+    // ----- مراقب حالة تسجيل الدخول (الأصلي) -----
     onAuthStateChanged(auth, (user) => {
       updateUI(user);
     });
 
-    // ----- تسجيل الخروج -----
+    // ----- تسجيل الخروج (الأصلي) -----
     logoutBtn.addEventListener('click', async () => {
       try {
         await signOut(auth);
@@ -558,7 +1082,7 @@
       }
     });
 
-    // ----- أحداث الأزرار والنماذج -----
+    // ----- أحداث الأزرار والنماذج (الأصلية) -----
     loginBtn.addEventListener('click', () => openModal(true));
     signupBtn.addEventListener('click', () => openModal(false));
     closeModalBtn.addEventListener('click', closeModal);
@@ -566,12 +1090,10 @@
       if (e.target === modal) closeModal();
     });
 
-    // تبديل الوضع داخل المودال
     switchLink.addEventListener('click', () => {
       setMode(!isLoginMode);
     });
 
-    // تقديم النموذج عند الضغط على Enter أو الزر
     submitBtn.addEventListener('click', handleAuthSubmit);
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && modal.classList.contains('active')) {
@@ -580,8 +1102,29 @@
       if (e.key === 'Escape') closeModal();
     });
 
-    // ----- تحقق إضافي: عند إغلاق المودال نعيد ضبط الأخطاء -----
-    console.log("🚀 TeleLinks with Firebase Auth + Firestore is ready!");
+    // ----- التعامل مع Hash (الروابط المباشرة) (جديد) -----
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash;
+      if (hash === '#publish') navigateTo('publish');
+      else if (hash.startsWith('#post/')) {
+        const id = hash.split('/')[1];
+        navigateTo('post', id);
+      } else {
+        navigateTo('home');
+      }
+    });
+    if (window.location.hash) {
+      const hash = window.location.hash;
+      if (hash === '#publish') navigateTo('publish');
+      else if (hash.startsWith('#post/')) {
+        const id = hash.split('/')[1];
+        navigateTo('post', id);
+      }
+    }
+
+    // ----- بدء التطبيق (جديد) -----
+    listenToPosts();
+    console.log("🚀 TeleLinks جاهز مع نظام النشر وتحليل الروابط!");
   </script>
 </body>
 </html>
