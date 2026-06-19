@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TeleLinks | شبكة تيليجرام</title>
   <style>
-    /* ====== الأنماط الأساسية ====== */
+    /* ====== الأنماط ====== */
     * {
       margin: 0;
       padding: 0;
@@ -15,7 +15,6 @@
     body {
       background-color: #f5f9fc;
       color: #1e2a3a;
-      padding-bottom: 20px;
     }
     .header {
       background-color: #0D5C75;
@@ -160,7 +159,7 @@
     }
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 25px;
       padding: 15px 40px 30px;
     }
@@ -171,12 +170,11 @@
       box-shadow: 0 6px 18px rgba(13, 92, 117, 0.10);
       border-right: 6px solid #199FB1;
       transition: 0.3s;
-      cursor: pointer;
-      height: 280px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       overflow: hidden;
+      height: 310px;
     }
     .card:hover {
       transform: translateY(-5px);
@@ -224,6 +222,43 @@
       object-fit: cover;
       border-radius: 12px;
       margin-bottom: 10px;
+    }
+    .card .card-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .card .card-actions .btn-details {
+      background: #199FB1;
+      color: white;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+      flex: 1;
+    }
+    .card .card-actions .btn-details:hover {
+      background: #0D5C75;
+    }
+    .card .card-actions .btn-join {
+      background: #ffb74d;
+      color: #0D5C75;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+    }
+    .card .card-actions .btn-join:hover {
+      background: #ffa726;
     }
     .footer {
       background: #0D5C75;
@@ -745,14 +780,14 @@
     let currentUser = null;
     let allPosts = [];
     let currentFilter = 'all';
-    let isNavigatingToPost = false; // لمنع إعادة التحميل
+    let isNavigating = false;
 
     // ============================================================
     // دوال التنقل
     // ============================================================
     window.navigateTo = function(page, param = null) {
-      // منع التنقل أثناء عرض منشور لتجنب الحلقات
-      if (isNavigatingToPost) return;
+      if (isNavigating) return;
+      isNavigating = true;
       
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       
@@ -764,6 +799,7 @@
         if (!currentUser) {
           showToast('⚠️ يرجى تسجيل الدخول أولاً');
           openModal(true);
+          isNavigating = false;
           return;
         }
         document.getElementById('publishPage').classList.add('active');
@@ -771,8 +807,10 @@
       } else if (page === 'post' && param) {
         document.getElementById('postPage').classList.add('active');
         window.location.hash = `#post/${param}`;
-        renderPostView(param);
+        // سيتم عرض المنشور بواسطة openPost
       }
+      
+      setTimeout(() => { isNavigating = false; }, 300);
     };
 
     // ============================================================
@@ -785,7 +823,7 @@
         return;
       }
       postsGrid.innerHTML = filtered.map(post => `
-        <div class="card" data-post-id="${post.id}" onclick="openPost('${post.id}')">
+        <div class="card">
           ${post.cover ? `<img src="${post.cover}" alt="غلاف" class="cover-img" onerror="this.style.display='none'" />` : ''}
           <h3>${post.name || 'بدون اسم'}</h3>
           <p>${post.shortDesc || '...'}</p>
@@ -795,78 +833,69 @@
             <span>👁️ ${post.views || 0}</span>
             <span>💾 ${post.saves || 0}</span>
           </div>
+          <div class="card-actions">
+            <button class="btn-details" onclick="openPost('${post.id}')">📖 عرض التفاصيل</button>
+            <a href="${post.link}" target="_blank" class="btn-join">➕ انضم</a>
+          </div>
         </div>
       `).join('');
     }
 
     // ============================================================
-    // فتح المنشور - إصلاح المشكلة الحرجة
+    // فتح المنشور - نسخة محسنة مع جلب من Firestore
     // ============================================================
-    window.openPost = function(postId) {
-      // منع التنقل المتكرر
-      if (isNavigatingToPost) return;
-      isNavigatingToPost = true;
+    window.openPost = async function(postId) {
+      if (isNavigating) return;
+      isNavigating = true;
       
       try {
-        // التأكد من وجود المنشور
-        const post = allPosts.find(p => p.id === postId);
+        // البحث في allPosts أولاً
+        let post = allPosts.find(p => p.id === postId);
+        
+        // إذا لم يوجد، نجلب من Firestore
         if (!post) {
-          showToast('⚠️ المنشور غير موجود');
-          isNavigatingToPost = false;
-          return;
+          const docRef = doc(db, "posts", postId);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            post = { id: docSnap.id, ...docSnap.data() };
+            // إضافته إلى allPosts مؤقتاً
+            allPosts.unshift(post);
+          } else {
+            showToast('⚠️ المنشور غير موجود');
+            isNavigating = false;
+            return;
+          }
         }
-        navigateTo('post', postId);
+        
+        // عرض المنشور
+        renderPostView(post);
+        // التنقل إلى صفحة المنشور
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('postPage').classList.add('active');
+        window.location.hash = `#post/${postId}`;
+        
       } catch (error) {
         console.error('خطأ في فتح المنشور:', error);
         showToast('❌ حدث خطأ أثناء فتح المنشور');
       } finally {
-        // إعادة تعيين العلم بعد تأخير بسيط
-        setTimeout(() => {
-          isNavigatingToPost = false;
-        }, 500);
+        setTimeout(() => { isNavigating = false; }, 500);
       }
     };
 
     // ============================================================
-    // جلب المنشورات من Firestore (Realtime)
+    // عرض صفحة منشور واحد (تستقبل كائن المنشور)
     // ============================================================
-    function listenToPosts() {
-      const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-      onSnapshot(q, (snapshot) => {
-        allPosts = [];
-        snapshot.forEach(doc => {
-          allPosts.push({ id: doc.id, ...doc.data() });
-        });
-        // فقط إذا كنا في الصفحة الرئيسية
-        if (document.getElementById('homePage').classList.contains('active')) {
-          renderPosts(allPosts);
-        }
-      }, (error) => {
-        console.error("خطأ في جلب المنشورات:", error);
-        postsGrid.innerHTML = `<div style="text-align:center;padding:40px;color:red;">❌ حدث خطأ في تحميل البيانات.</div>`;
-      });
-    }
-
-    // ============================================================
-    // عرض صفحة منشور واحد
-    // ============================================================
-    window.renderPostView = function(postId) {
+    function renderPostView(post) {
       const container = document.getElementById('postViewContainer');
-      const post = allPosts.find(p => p.id === postId);
-      
-      if (!post) {
-        container.innerHTML = `<div style="text-align:center;padding:40px;color:#6f8a9b;">⚠️ المنشور غير موجود.</div>`;
-        return;
-      }
       
       // زيادة عدد المشاهدات
-      const postRef = doc(db, "posts", postId);
+      const postRef = doc(db, "posts", post.id);
       updateDoc(postRef, { views: increment(1) })
         .catch(e => console.warn("زيادة الزيارات فشلت", e));
 
       const coverHtml = post.cover ? `<img src="${post.cover}" alt="غلاف" />` : '📢';
       
-      // التحقق من مالك المنشور - مقارنة صحيحة
+      // التحقق من مالك المنشور
       const isOwner = currentUser && post.ownerId === currentUser.uid;
       
       container.innerHTML = `
@@ -921,10 +950,29 @@
           </div>
         </div>
       `;
-    };
+    }
 
     // ============================================================
-    // حذف المنشور - إصلاح
+    // جلب المنشورات من Firestore (Realtime)
+    // ============================================================
+    function listenToPosts() {
+      const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+      onSnapshot(q, (snapshot) => {
+        allPosts = [];
+        snapshot.forEach(doc => {
+          allPosts.push({ id: doc.id, ...doc.data() });
+        });
+        if (document.getElementById('homePage').classList.contains('active')) {
+          renderPosts(allPosts);
+        }
+      }, (error) => {
+        console.error("خطأ في جلب المنشورات:", error);
+        postsGrid.innerHTML = `<div style="text-align:center;padding:40px;color:red;">❌ حدث خطأ في تحميل البيانات.</div>`;
+      });
+    }
+
+    // ============================================================
+    // حذف المنشور
     // ============================================================
     window.deletePost = async function(postId) {
       if (!currentUser) {
@@ -938,7 +986,6 @@
         return;
       }
       
-      // التأكد من أن المستخدم هو المالك
       if (post.ownerId !== currentUser.uid) {
         showToast('⚠️ لا يمكنك حذف منشور ليس ملكك');
         return;
@@ -949,7 +996,6 @@
       try {
         await deleteDoc(doc(db, "posts", postId));
         showToast('✅ تم حذف المنشور بنجاح');
-        // العودة إلى الصفحة الرئيسية
         navigateTo('home');
       } catch (e) {
         console.error("خطأ في الحذف:", e);
@@ -978,13 +1024,11 @@
       const lang = document.getElementById('postLang').value.trim();
       const country = document.getElementById('postCountry').value.trim();
 
-      // التحقق من الحقول المطلوبة
       if (!link || !name || !category || !shortDesc) {
         showToast('⚠️ الرجاء ملء الحقول المطلوبة: الرابط، الاسم، التصنيف، الوصف المختصر.');
         return;
       }
 
-      // منع النشر الفارغ
       if (shortDesc.length < 3) {
         showToast('⚠️ الوصف المختصر قصير جداً (3 أحرف على الأقل)');
         return;
@@ -992,22 +1036,14 @@
 
       try {
         const postData = {
-          link, 
-          name, 
-          category, 
-          cover: cover || '',
-          shortDesc, 
-          longDesc: longDesc || '',
-          keywords: keywords || '',
-          features: features || '',
-          lang: lang || 'غير محدد',
-          country: country || 'كل الدول',
+          link, name, category, cover: cover || '',
+          shortDesc, longDesc: longDesc || '',
+          keywords: keywords || '', features: features || '',
+          lang: lang || 'غير محدد', country: country || 'كل الدول',
           ownerId: currentUser.uid,
           ownerName: currentUser.displayName || 'مستخدم',
           createdAt: serverTimestamp(),
-          views: 0,
-          likes: 0,
-          saves: 0
+          views: 0, likes: 0, saves: 0
         };
         await addDoc(collection(db, "posts"), postData);
         showToast('🎉 تم نشر المنشور بنجاح!');
@@ -1223,7 +1259,6 @@
       try {
         await signOut(auth);
         console.log("👋 تم تسجيل الخروج");
-        // العودة للصفحة الرئيسية بعد تسجيل الخروج
         navigateTo('home');
       } catch (e) {
         console.error("خطأ في تسجيل الخروج:", e);
@@ -1260,7 +1295,8 @@
       if (hash === '#publish') navigateTo('publish');
       else if (hash.startsWith('#post/')) {
         const id = hash.split('/')[1];
-        navigateTo('post', id);
+        // استدعاء openPost لتحميل البيانات
+        if (id) openPost(id);
       } else {
         navigateTo('home');
       }
@@ -1272,7 +1308,7 @@
       if (hash === '#publish') navigateTo('publish');
       else if (hash.startsWith('#post/')) {
         const id = hash.split('/')[1];
-        navigateTo('post', id);
+        if (id) setTimeout(() => openPost(id), 100); // تأخير بسيط لضمان تحميل البيانات
       }
     }
 
@@ -1280,7 +1316,7 @@
     // بدء التطبيق
     // ============================================================
     listenToPosts();
-    console.log("🚀 TeleLinks جاهز مع جميع التحسينات!");
+    console.log("🚀 TeleLinks جاهز مع زر عرض التفاصيل المحسّن!");
   </script>
 </body>
 </html>
